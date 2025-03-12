@@ -1,0 +1,12 @@
+D:\onebeyond\.NET\onebeyond.Model\bin\Debug\net8.0\onebeyond.Model.deps.json
+D:\onebeyond\.NET\onebeyond.Model\bin\Debug\net8.0\onebeyond.Model.dll
+D:\onebeyond\.NET\onebeyond.Model\bin\Debug\net8.0\onebeyond.Model.pdb
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\onebeyond.Model.GeneratedMSBuildEditorConfig.editorconfig
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\onebeyond.Model.AssemblyInfoInputs.cache
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\onebeyond.Model.AssemblyInfo.cs
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\onebeyond.Model.csproj.CoreCompileInputs.cache
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\onebeyond.Model.sourcelink.json
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\onebeyond.Model.dll
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\refint\onebeyond.Model.dll
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\onebeyond.Model.pdb
+D:\onebeyond\.NET\onebeyond.Model\obj\Debug\net8.0\ref\onebeyond.Model.dll
