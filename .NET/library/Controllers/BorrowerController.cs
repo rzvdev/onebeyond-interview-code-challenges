@@ -50,7 +50,11 @@ namespace OneBeyondApi.Controllers
             if (borrowers == null || borrowers.Count == 0)
                 return NotFound("No borrowers found.");
 
-            return Ok(borrowers);
+        [HttpPut]
+        [Route("OnLoad/Return/{bookStockId}")]
+        public IActionResult ReturnBook(Guid bookStockId) {
+            var response = _borrowerRepository.MarkBookAsReturned(bookStockId);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }

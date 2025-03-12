@@ -1,4 +1,5 @@
 ﻿using OneBeyondApi.Model;
+using OneBeyondApi.Model.Core;
 using OneBeyondApi.Model.DTOs;
 
 namespace OneBeyondApi.DataAccess
@@ -12,11 +13,13 @@ namespace OneBeyondApi.DataAccess
         /// <summary>
         /// Retrieves a list of BorrowerLoanDto objects which 
         /// contains details about who currently have books on loan.
+        /// <summary>
+        /// Marks a book as returned, updating its loan status.
         /// </summary>
+        /// <param name="bookStockId">The unique identifier (<see cref="Guid"/>) of the book stock record.</param>
         /// <returns>
-        ///  A list of BorrowerLoanDto objects representing borrowers with active loans.
-        ///  If no borrowers are found, returns an empty list.
+        /// Returns an <see cref="ApiResponse{T}"/> with a <see cref="Guid"/> representing the returned book's stock ID.
         /// </returns>
-        public List<BorrowerLoanDto> GetBorrowersLoans();
+        public ApiResponse<Guid> MarkBookAsReturned(Guid bookStockId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OneBeyondApi.Model;
+using OneBeyondApi.Model.Core;
 using OneBeyondApi.Model.DTOs;
 
 namespace OneBeyondApi.DataAccess
@@ -39,6 +40,22 @@ namespace OneBeyondApi.DataAccess
                                         BookTitle: bs.Book.Name,
                                         LoadEndDate: bs.LoanEndDate
                                     )).ToList();
+        public ApiResponse<Guid> MarkBookAsReturned(Guid bookStockId) {
+            using var context = new LibraryContext();
+
+            var bookStock = context.Catalogue.FirstOrDefault(bs => bs.Id == bookStockId && bs.OnLoanTo != null);
+
+            if (bookStock is null)
+                return ApiResponse<Guid>.ErrorResponse("Book not found");
+            if (bookStock.OnLoanTo is null)
+                return ApiResponse<Guid>.ErrorResponse("Book is not currently on loan");
+
+            // mark the book as returned
+            bookStock.OnLoanTo = null;
+            bookStock.LoanEndDate = null;
+            context.SaveChanges();
+
+            return ApiResponse<Guid>.SuccessResponse(bookStockId, "Book successfully returned");
         }
     }
 }
