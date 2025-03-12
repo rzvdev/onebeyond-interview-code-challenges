@@ -1,4 +1,5 @@
 ﻿using OneBeyondApi.Model;
+using OneBeyondApi.Model.DTOs;
 
 namespace OneBeyondApi.DataAccess
 {
@@ -25,6 +26,19 @@ namespace OneBeyondApi.DataAccess
                 context.SaveChanges();
                 return borrower.Id;
             }
+        }
+
+        public List<BorrowerLoanDto> GetBorrowersLoans() {
+            using var context = new LibraryContext();
+
+            return context.Catalogue.Where(bs => bs.OnLoanTo != null && bs.LoanEndDate > DateTime.UtcNow)
+                                    .AsEnumerable()
+                                    .Select(bs => new BorrowerLoanDto(
+                                        BorrowerName: bs.OnLoanTo!.Name,
+                                        BorrowerEmail: bs.OnLoanTo!.EmailAddress,
+                                        BookTitle: bs.Book.Name,
+                                        LoadEndDate: bs.LoanEndDate
+                                    )).ToList();
         }
     }
 }
