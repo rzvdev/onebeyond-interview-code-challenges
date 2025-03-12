@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OneBeyondApi.Model;
+namespace OneBeyond.Model.Entities;
 
 [Table("DBD_RESERVATION")] // DBD aka DOMAIN BUSSINESS DATA
 public sealed class Reservation

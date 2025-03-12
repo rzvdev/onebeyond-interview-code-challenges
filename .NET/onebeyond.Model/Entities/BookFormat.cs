@@ -1,11 +1,9 @@
-﻿namespace OneBeyondApi.Model
+﻿namespace OneBeyond.Model.Entities;
+public enum BookFormat
 {
-    public enum BookFormat
-    {
-        Paperback,
-        Magazine,
-        Periodical,
-        Hardback,
-        CompactDisc
-    }
+    Paperback,
+    Magazine,
+    Periodical,
+    Hardback,
+    CompactDisc
 }

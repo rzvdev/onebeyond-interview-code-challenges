@@ -1,13 +1,17 @@
-using OneBeyondApi;
-using OneBeyondApi.DataAccess;
+using Microsoft.EntityFrameworkCore;
+using OneBeyond.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Register LibraryContext with DI
+builder.Services.AddDbContext<LibraryContext>(options => options.UseInMemoryDatabase("OneBeyondDB"));
 
 // Add services to the container.
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBorrowerRepository, BorrowerRepository>();
 builder.Services.AddScoped<ICatalogueRepository, CatalogueRepository>();
+builder.Services.AddScoped<ILibraryContext, LibraryContext>();
 
 // Seed test data into memory DB
 SeedData.SetInitialData();

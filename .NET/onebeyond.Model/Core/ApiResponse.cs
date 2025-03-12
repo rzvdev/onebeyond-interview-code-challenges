@@ -1,4 +1,4 @@
-﻿namespace OneBeyondApi.Model.Core
+﻿namespace OneBeyond.Model.Core
 {
     /// <summary>
     /// A generic API response wrapper that provides consistency across all API endpoints.

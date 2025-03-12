@@ -1,19 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OneBeyondApi.Model;
+using OneBeyond.Model.Entities;
 
-namespace OneBeyondApi.DataAccess
+namespace OneBeyond.DataAccess;
+
+public class LibraryContext(DbContextOptions<LibraryContext> options) : DbContext(options), ILibraryContext
 {
-    public class LibraryContext: DbContext
-    {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "AuthorDb");
-        }
-        public DbSet<Author> Authors { get; set; }
-        public DbSet<Book> Books { get; set; }
-        public DbSet<BookStock> Catalogue { get; set; }
-        public DbSet<Borrower> Borrowers { get; set; }
-        public DbSet<Fine> Fines { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
-    }
+    public DbSet<Author> Authors { get; set; }
+    public DbSet<Book> Books { get; set; }
+    public DbSet<BookStock> Catalogue { get; set; }
+    public DbSet<Borrower> Borrowers { get; set; }
+    public DbSet<Fine> Fines { get; set; }
+    public DbSet<Reservation> Reservations { get; set; }
 }

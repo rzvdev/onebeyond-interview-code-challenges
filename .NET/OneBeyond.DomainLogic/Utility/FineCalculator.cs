@@ -1,4 +1,4 @@
-﻿namespace OneBeyondApi.Utility;
+﻿namespace OneBeyond.DomainLogic.Utility;
 
 public sealed class FineCalculator
 {

@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OneBeyondApi.Model;
+namespace OneBeyond.Model.Entities;
 
 [Table("DBD_FINE")] // DBD aka DOMAIN BUSSINESS DATA
 public sealed class Fine
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("DBD_FINE_ID")] 
+    [Column("DBD_FINE_ID")]
     public int Id { get; set; }
 
-    [Column("DBD_FINE_GUID")] 
+    [Column("DBD_FINE_GUID")]
     public Guid Guid { get; set; } = Guid.NewGuid();
 
     [Column("DBD_FINE_BORROWER_ID")]
