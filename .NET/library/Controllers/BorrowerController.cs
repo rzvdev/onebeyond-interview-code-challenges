@@ -31,13 +31,6 @@ namespace OneBeyondApi.Controllers
             return _borrowerRepository.AddBorrower(borrower);
         }
 
-        /// <summary>
-        /// Retrieves a list of borrowers who currently have books on loan.
-        /// </summary>
-        /// <returns>
-        ///  IActionResult containing a list of borrowers with active loans,
-        ///  or a NotFound response if no borrowers are found
-        /// </returns>
         [HttpGet]
         [Route("OnLoan")]
         public IActionResult GetBorrowersLoan() {
@@ -46,11 +39,15 @@ namespace OneBeyondApi.Controllers
             // - If borrowers exists, we return 200 OK with the data.
             // This approach ensures a more restful API compared to returning a raw List<T> or IList<T>
 
-            var borrowers = _borrowerRepository.GetBorrowersLoans();
-            if (borrowers == null || borrowers.Count == 0)
-                return NotFound("No borrowers found.");
+            var response = _borrowerRepository.GetBorrowersLoans();
+            return Ok(response);
+        }
 
-            return Ok(borrowers);
+        [HttpPut]
+        [Route("OnLoad/Return/{bookStockId}")]
+        public IActionResult ReturnBook(Guid bookStockId) {
+            var response = _borrowerRepository.MarkBookAsReturned(bookStockId);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }
