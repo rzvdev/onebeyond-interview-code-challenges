@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OneBeyondApi.DataAccess;
 using OneBeyondApi.Model;
-using System.Collections;
 
 namespace OneBeyondApi.Controllers
 {
@@ -30,6 +29,28 @@ namespace OneBeyondApi.Controllers
         public Guid Post(Borrower borrower)
         {
             return _borrowerRepository.AddBorrower(borrower);
+        }
+
+        /// <summary>
+        /// Retrieves a list of borrowers who currently have books on loan.
+        /// </summary>
+        /// <returns>
+        ///  IActionResult containing a list of borrowers with active loans,
+        ///  or a NotFound response if no borrowers are found
+        /// </returns>
+        [HttpGet]
+        [Route("OnLoan")]
+        public IActionResult GetBorrowersLoan() {
+            // Using IActionResult allows for better API response handling.
+            // - If no borrowers have active loans, we return 404 Not Found.
+            // - If borrowers exists, we return 200 OK with the data.
+            // This approach ensures a more restful API compared to returning a raw List<T> or IList<T>
+
+            var borrowers = _borrowerRepository.GetBorrowersLoans();
+            if (borrowers == null || borrowers.Count == 0)
+                return NotFound("No borrowers found.");
+
+            return Ok(borrowers);
         }
     }
 }
