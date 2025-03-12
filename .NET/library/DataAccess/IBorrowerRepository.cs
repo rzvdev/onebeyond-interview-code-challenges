@@ -11,8 +11,13 @@ namespace OneBeyondApi.DataAccess
         public Guid AddBorrower(Borrower borrower);
 
         /// <summary>
-        /// Retrieves a list of BorrowerLoanDto objects which 
-        /// contains details about who currently have books on loan.
+        /// Retrieves a list of borrowers who currently have books on loan.
+        /// </summary>
+        /// <returns>
+        ///  Returns an <see cref="ApiResponse{T}"/> containing a list of <see cref="BorrowerLoanDto"/>.
+        /// </returns>
+        public ApiResponse<List<BorrowerLoanDto>> GetBorrowersLoans();
+
         /// <summary>
         /// Marks a book as returned, updating its loan status.
         /// </summary>

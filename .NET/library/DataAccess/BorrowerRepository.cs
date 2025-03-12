@@ -29,17 +29,23 @@ namespace OneBeyondApi.DataAccess
             }
         }
 
-        public List<BorrowerLoanDto> GetBorrowersLoans() {
+        public ApiResponse<List<BorrowerLoanDto>> GetBorrowersLoans() {
             using var context = new LibraryContext();
 
-            return context.Catalogue.Where(bs => bs.OnLoanTo != null && bs.LoanEndDate > DateTime.UtcNow)
-                                    .AsEnumerable()
-                                    .Select(bs => new BorrowerLoanDto(
-                                        BorrowerName: bs.OnLoanTo!.Name,
-                                        BorrowerEmail: bs.OnLoanTo!.EmailAddress,
-                                        BookTitle: bs.Book.Name,
-                                        LoadEndDate: bs.LoanEndDate
-                                    )).ToList();
+            var borrowers = context.Catalogue.Where(bs => bs.OnLoanTo != null && bs.LoanEndDate > DateTime.UtcNow)
+                                             .AsEnumerable()
+                                             .Select(bs => new BorrowerLoanDto(
+                                                BorrowerName: bs.OnLoanTo!.Name,
+                                                BorrowerEmail: bs.OnLoanTo!.EmailAddress,
+                                                BookTitle: bs.Book.Name,
+                                                LoadEndDate: bs.LoanEndDate
+                                             )).ToList();
+
+            return borrowers.Count != 0
+                ? ApiResponse<List<BorrowerLoanDto>>.SuccessResponse(borrowers, "Borrowers with active loans retrieved successfully")
+                : ApiResponse<List<BorrowerLoanDto>>.ErrorResponse("No borrowers found with active loans.");
+        }
+
         public ApiResponse<Guid> MarkBookAsReturned(Guid bookStockId) {
             using var context = new LibraryContext();
 
