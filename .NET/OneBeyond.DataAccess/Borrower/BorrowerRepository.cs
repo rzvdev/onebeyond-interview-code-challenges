@@ -8,35 +8,29 @@ namespace OneBeyond.DataAccess;
 
 public class BorrowerRepository : IBorrowerRepository
 {
-    public BorrowerRepository()
+    private readonly ILibraryContext _context;
+    public BorrowerRepository(ILibraryContext context)
     {
+        _context = context;
     }
+
     public List<Borrower> GetBorrowers()
     {
-        using (var context = new LibraryContext())
-        {
-            var list = context.Borrowers
-                .ToList();
-            return list;
-        }
+        return _context.Borrowers
+                       .ToList();
     }
 
     public Guid AddBorrower(Borrower borrower)
     {
-        using (var context = new LibraryContext())
-        {
-            context.Borrowers.Add(borrower);
-            context.SaveChanges();
-            return borrower.Id;
-        }
+        _context.Borrowers.Add(borrower);
+        _context.SaveChangesAsync();
+        return borrower.Id;
     }
 
     public ApiResponse<List<BorrowerLoanDto>> GetBorrowersLoans() {
-        using var context = new LibraryContext();
+        var bookStocks = _context.Catalogue.ToList();
 
-        var bookStocks = context.Catalogue.ToList();
-
-        var borrowers = context.Catalogue.Where(bs => bs.OnLoanTo != null)
+        var borrowers = _context.Catalogue.Where(bs => bs.OnLoanTo != null)
                                          .Include(bs => bs.OnLoanTo)
                                          .Include(bs => bs.Book)
                                          .AsEnumerable()
@@ -53,9 +47,7 @@ public class BorrowerRepository : IBorrowerRepository
     }
 
     public ApiResponse<Guid> MarkBookAsReturned(Guid bookStockId) {
-        using var context = new LibraryContext();
-
-        var bookStock = context.Catalogue.Include(bs => bs.OnLoanTo)
+        var bookStock = _context.Catalogue.Include(bs => bs.OnLoanTo)
                                          .FirstOrDefault(bs => bs.Id == bookStockId && bs.OnLoanTo != null);
 
         if (bookStock is null)
@@ -70,7 +62,7 @@ public class BorrowerRepository : IBorrowerRepository
         if (bookStock.LoanEndDate.HasValue && returnDate > bookStock.LoanEndDate.Value) {
             fineAmount = FineCalculator.CalculateFine(bookStock.LoanEndDate.Value, returnDate);
 
-            context.Fines.Add(new() {
+            _context.Fines.Add(new() {
                 Borrower = bookStock.OnLoanTo,
                 BookStock = bookStock,
                 Amount = fineAmount
@@ -80,7 +72,7 @@ public class BorrowerRepository : IBorrowerRepository
         // mark the book as returned
         bookStock.OnLoanTo = null;
         bookStock.LoanEndDate = null;
-        context.SaveChanges();
+        _context.SaveChangesAsync();
 
         return fineAmount > 0 
             ? ApiResponse<Guid>.SuccessResponse(bookStockId, $"Book returned late. Fine imposed: ${fineAmount}")
@@ -88,10 +80,8 @@ public class BorrowerRepository : IBorrowerRepository
     }
 
     public ApiResponse<Guid> ReserveBook(Guid borrowerId, Guid bookId) {
-        using var context = new LibraryContext();
-
         // check if the book have already a reservation
-        var bookStock = context.Catalogue.Include(bs => bs.Book)
+        var bookStock = _context.Catalogue.Include(bs => bs.Book)
                                          .Where(bs => bs.Book.Id == bookId && bs.OnLoanTo != null)
                                          .FirstOrDefault();
 
@@ -99,7 +89,7 @@ public class BorrowerRepository : IBorrowerRepository
             return ApiResponse<Guid>.ErrorResponse("This book is not currently on loan and does not require a reservation");
 
         // check if book was already reserved by that borrower
-        var reservationExists = context.Reservations.Include(r => r.Borrower)
+        var reservationExists = _context.Reservations.Include(r => r.Borrower)
                                                     .Include(r => r.Book)
                                                     .Any(r => r.Borrower.Id == borrowerId && r.Book.Id == bookId && r.IsActive);
 
@@ -107,7 +97,7 @@ public class BorrowerRepository : IBorrowerRepository
             return ApiResponse<Guid>.ErrorResponse("You have already reserved that book");
 
         // check the queue for that book reservation
-        var queuePosition = context.Reservations.Include(r => r.Book)
+        var queuePosition = _context.Reservations.Include(r => r.Book)
                                                  .Where(r => r.Book.Id == bookId && r.IsActive)
                                                  .Count() + 1;
 
@@ -118,19 +108,17 @@ public class BorrowerRepository : IBorrowerRepository
             ExpectedAvailabilityDate = expectedAvailabilityDate.Value,
         };
 
-        context.Reservations.Add(reservation);
-        context.SaveChanges();
+        _context.Reservations.Add(reservation);
+        _context.SaveChangesAsync();
 
         return ApiResponse<Guid>.SuccessResponse(reservation.Guid, $"Book reserved successfully. Your estimated availability date: {expectedAvailabilityDate?.ToShortDateString()}");
     }
 
     public ApiResponse<ReservationStatusDto> GetReservationStatus(Guid borrowerId, Guid bookId) {
-        using var context = new LibraryContext();
-
-        var reservation = context.Reservations.Include(r => r.Borrower)
-                                              .Include(r => r.Book)
-                                              .Where(r => r.Borrower.Id == borrowerId && r.Book.Id == bookId && r.IsActive)
-                                              .FirstOrDefault();
+        var reservation = _context.Reservations.Include(r => r.Borrower)
+                                               .Include(r => r.Book)
+                                               .Where(r => r.Borrower.Id == borrowerId && r.Book.Id == bookId && r.IsActive)
+                                               .FirstOrDefault();
 
         if (reservation == null)
             return ApiResponse<ReservationStatusDto>.ErrorResponse("No active reservation found for this book");

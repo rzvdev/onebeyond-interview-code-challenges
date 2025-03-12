@@ -3,7 +3,13 @@
 namespace OneBeyond.DataAccess;
 public class SeedData
 {
-    public static void SetInitialData() {
+    private readonly ILibraryContext _context;
+
+    public SeedData(ILibraryContext context) {
+        _context = context;
+    }
+
+    public void SetInitialData() {
         var ernestMonkjack = new Author {
             Name = "Ernest Monkjack"
         };
@@ -69,26 +75,23 @@ public class SeedData
             LoanEndDate = null
         };
 
-        using (var context = new LibraryContext()) {
-            context.Authors.Add(ernestMonkjack);
-            context.Authors.Add(sarahKennedy);
-            context.Authors.Add(margaretJones);
+        _context.Authors.Add(ernestMonkjack);
+        _context.Authors.Add(sarahKennedy);
+        _context.Authors.Add(margaretJones);
 
 
-            context.Books.Add(clayBook);
-            context.Books.Add(agileBook);
-            context.Books.Add(rustBook);
+        _context.Books.Add(clayBook);
+        _context.Books.Add(agileBook);
+        _context.Books.Add(rustBook);
 
-            context.Borrowers.Add(daveSmith);
-            context.Borrowers.Add(lianaJames);
+        _context.Borrowers.Add(daveSmith);
+        _context.Borrowers.Add(lianaJames);
 
-            context.Catalogue.Add(bookOnLoanUntilToday);
-            context.Catalogue.Add(bookNotOnLoan);
-            context.Catalogue.Add(bookOnLoanUntilNextWeek);
-            context.Catalogue.Add(rustBookStock);
+        _context.Catalogue.Add(bookOnLoanUntilToday);
+        _context.Catalogue.Add(bookNotOnLoan);
+        _context.Catalogue.Add(bookOnLoanUntilNextWeek);
+        _context.Catalogue.Add(rustBookStock);
 
-            context.SaveChanges();
-
-        }
+        _context.SaveChangesAsync();
     }
 }
