@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "onebeyond.Model/1.0.0": {
+      "OneBeyond.Model/1.0.0": {
         "runtime": {
-          "onebeyond.Model.dll": {}
+          "OneBeyond.Model.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "onebeyond.Model/1.0.0": {
+    "OneBeyond.Model/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

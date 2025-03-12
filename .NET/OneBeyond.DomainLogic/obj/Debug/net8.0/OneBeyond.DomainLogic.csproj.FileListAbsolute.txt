@@ -1,11 +1,17 @@
 D:\onebeyond\.NET\OneBeyond.DomainLogic\bin\Debug\net8.0\OneBeyond.DomainLogic.deps.json
 D:\onebeyond\.NET\OneBeyond.DomainLogic\bin\Debug\net8.0\OneBeyond.DomainLogic.dll
 D:\onebeyond\.NET\OneBeyond.DomainLogic\bin\Debug\net8.0\OneBeyond.DomainLogic.pdb
+D:\onebeyond\.NET\OneBeyond.DomainLogic\bin\Debug\net8.0\OneBeyond.DataAccess.dll
+D:\onebeyond\.NET\OneBeyond.DomainLogic\bin\Debug\net8.0\OneBeyond.Model.dll
+D:\onebeyond\.NET\OneBeyond.DomainLogic\bin\Debug\net8.0\OneBeyond.DataAccess.pdb
+D:\onebeyond\.NET\OneBeyond.DomainLogic\bin\Debug\net8.0\OneBeyond.Model.pdb
+D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyond.DomainLogic.csproj.AssemblyReference.cache
 D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyond.DomainLogic.GeneratedMSBuildEditorConfig.editorconfig
 D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyond.DomainLogic.AssemblyInfoInputs.cache
 D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyond.DomainLogic.AssemblyInfo.cs
 D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyond.DomainLogic.csproj.CoreCompileInputs.cache
 D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyond.DomainLogic.sourcelink.json
+D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyon.51717D6F.Up2Date
 D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyond.DomainLogic.dll
 D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\refint\OneBeyond.DomainLogic.dll
 D:\onebeyond\.NET\OneBeyond.DomainLogic\obj\Debug\net8.0\OneBeyond.DomainLogic.pdb

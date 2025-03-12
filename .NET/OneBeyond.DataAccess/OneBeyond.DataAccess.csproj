@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OneBeyond.DomainLogic\OneBeyond.DomainLogic.csproj" />
     <ProjectReference Include="..\onebeyond.Model\OneBeyond.Model.csproj" />
   </ItemGroup>
 

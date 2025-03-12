@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using OneBeyond.DataAccess;
+using OneBeyond.DomainLogic;
 using OneBeyond.Model.Entities;
 
 namespace OneBeyond.API.Controllers;
@@ -18,13 +18,13 @@ public class BookController : ControllerBase
 
     [HttpGet]
     [Route("GetBooks")]
-    public IList<Book> Get() {
-        return _bookRepository.GetBooks();
+    public async Task<IActionResult> Get() {
+        return Ok(await _bookRepository.GetBooksAsync());
     }
 
     [HttpPost]
     [Route("AddBook")]
-    public Guid Post(Book book) {
-        return _bookRepository.AddBook(book);
+    public async Task<IActionResult> Post(Book book) {
+        return Ok(await _bookRepository.AddBookAsync(book));
     }
 }

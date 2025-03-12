@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OneBeyond.DataAccess\OneBeyond.DataAccess.csproj" />
+    <ProjectReference Include="..\OneBeyond.DomainLogic\OneBeyond.DomainLogic.csproj" />
     <ProjectReference Include="..\onebeyond.Model\OneBeyond.Model.csproj" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using OneBeyond.DataAccess;
+using OneBeyond.DomainLogic;
 using OneBeyond.Model.Entities;
 
 namespace OneBeyond.API.Controllers;
@@ -18,13 +18,13 @@ public class CatalogueController : ControllerBase
 
     [HttpGet]
     [Route("GetCatalogue")]
-    public IList<BookStock> Get() {
-        return _catalogueRepository.GetCatalogue();
+    public async Task<IActionResult> Get() {
+        return Ok(await _catalogueRepository.GetCatalogueAsync());
     }
 
     [HttpPost]
     [Route("SearchCatalogue")]
-    public IList<BookStock> Post(CatalogueSearch search) {
-        return _catalogueRepository.SearchCatalogue(search);
+    public async Task<IActionResult> Post(CatalogueSearch search) {
+        return Ok(await _catalogueRepository.SearchCatalogueAsync(search));
     }
 }

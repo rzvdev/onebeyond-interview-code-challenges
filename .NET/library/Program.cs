@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OneBeyond.DataAccess;
+using OneBeyond.DataAccess.DAOs;
+using OneBeyond.DomainLogic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,13 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBorrowerRepository, BorrowerRepository>();
 builder.Services.AddScoped<ICatalogueRepository, CatalogueRepository>();
+
+// DAOs
+builder.Services.AddScoped<IBorrowerDAO, BorrowerDAO>();
+builder.Services.AddScoped<IAuthorDAO, AuthorDAO>();
+builder.Services.AddScoped<IBookDao, BookDao>();
+builder.Services.AddScoped<ICatalogueDAO, CatalogueDAO>();
+
 builder.Services.AddTransient<SeedData>();
 
 builder.Services.AddControllers();

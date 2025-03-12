@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OneBeyond.DomainLogic")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e275f20b52710ca59cf3ddb64c2b289a6bd22451")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59ac3cce99de0d86d00e6d695959b194c227d0f2")]
 [assembly: System.Reflection.AssemblyProductAttribute("OneBeyond.DomainLogic")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OneBeyond.DomainLogic")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OneBeyond.DataAccess\OneBeyond.DataAccess.csproj" />
+    <ProjectReference Include="..\onebeyond.Model\OneBeyond.Model.csproj" />
+  </ItemGroup>
+
 </Project>

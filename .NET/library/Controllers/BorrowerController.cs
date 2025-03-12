@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using OneBeyond.DataAccess;
+using OneBeyond.DomainLogic;
 using OneBeyond.Model.Entities;
 
 namespace OneBeyond.API.Controllers;
@@ -18,46 +18,46 @@ public class BorrowerController : ControllerBase
 
     [HttpGet]
     [Route("GetBorrowers")]
-    public IList<Borrower> Get() {
-        return _borrowerRepository.GetBorrowers();
+    public async Task<IActionResult> Get() {
+        return Ok(await _borrowerRepository.GetBorrowersAsync());
     }
 
     [HttpPost]
     [Route("AddBorrower")]
-    public Guid Post(Borrower borrower) {
-        return _borrowerRepository.AddBorrower(borrower);
+    public async Task<IActionResult> Post(Borrower borrower) {
+        return Ok(await _borrowerRepository.AddBorrowerAsync(borrower));
     }
 
     [HttpGet]
     [Route("OnLoan")]
-    public IActionResult GetBorrowersLoan() {
+    public async Task<IActionResult> GetBorrowersLoan() {
         // Using IActionResult allows for better API response handling.
         // - If no borrowers have active loans, we return 404 Not Found.
         // - If borrowers exists, we return 200 OK with the data.
         // This approach ensures a more restful API compared to returning a raw List<T> or IList<T>
 
-        var response = _borrowerRepository.GetBorrowersLoans();
+        var response = Ok(await _borrowerRepository.GetBorrowersAsync());
         return Ok(response);
     }
 
     [HttpPut]
     [Route("OnLoad/Return/{bookStockId}")]
-    public IActionResult ReturnBook(Guid bookStockId) {
-        var response = _borrowerRepository.MarkBookAsReturned(bookStockId);
+    public async Task<IActionResult> ReturnBook(Guid bookStockId) {
+        var response = await _borrowerRepository.MarkBookAsReturned(bookStockId);
         return response.Success ? Ok(response) : BadRequest(response);
     }
 
     [HttpPost]
     [Route("ReserveBook/{borrowerId}/{bookId}")]
-    public IActionResult ReserveBook(Guid borrowerId, Guid bookId) {
-        var response = _borrowerRepository.ReserveBook(borrowerId, bookId);
+    public async Task<IActionResult> ReserveBook(Guid borrowerId, Guid bookId) {
+        var response = await _borrowerRepository.ReserveBook(borrowerId, bookId);
         return response.Success ? Ok(response) : BadRequest(response);
     }
 
     [HttpGet]
     [Route("ReservationStatus/{borrowerId}/{bookId}")]
-    public IActionResult GetReservationStatus(Guid borrowerId, Guid bookId) {
-        var response = _borrowerRepository.GetReservationStatus(borrowerId, bookId);
+    public async Task<IActionResult> GetReservationStatus(Guid borrowerId, Guid bookId) {
+        var response = await _borrowerRepository.GetReservationStatus(borrowerId, bookId);
         return response.Success ? Ok(response) : NotFound(response);
     }
 }
