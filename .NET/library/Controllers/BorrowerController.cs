@@ -49,5 +49,19 @@ namespace OneBeyondApi.Controllers
             var response = _borrowerRepository.MarkBookAsReturned(bookStockId);
             return response.Success ? Ok(response) : BadRequest(response);
         }
+
+        [HttpPost]
+        [Route("ReserveBook/{borrowerId}/{bookId}")]
+        public IActionResult ReserveBook(Guid borrowerId, Guid bookId) {
+            var response = _borrowerRepository.ReserveBook(borrowerId, bookId);
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpGet]
+        [Route("ReservationStatus/{borrowerId}/{bookId}")]
+        public IActionResult GetReservationStatus(Guid borrowerId, Guid bookId) {
+            var response = _borrowerRepository.GetReservationStatus(borrowerId, bookId);
+            return response.Success ? Ok(response) : NotFound(response);
+        }
     }
 }
