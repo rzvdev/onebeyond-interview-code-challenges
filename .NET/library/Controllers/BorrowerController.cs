@@ -19,25 +19,25 @@ public class BorrowerController : ControllerBase
     [HttpGet]
     [Route("GetBorrowers")]
     public async Task<IActionResult> Get() {
-        return Ok(await _borrowerRepository.GetBorrowersAsync());
+        var response = await _borrowerRepository.GetBorrowersAsync();
+        return response.Success ? Ok(response) : BadRequest(response);
     }
 
     [HttpPost]
     [Route("AddBorrower")]
     public async Task<IActionResult> Post(Borrower borrower) {
-        return Ok(await _borrowerRepository.AddBorrowerAsync(borrower));
+        var response = await _borrowerRepository.AddBorrowerAsync(borrower);
+        return response.Success ? Ok(response) : BadRequest(response);
     }
 
     [HttpGet]
     [Route("OnLoan")]
     public async Task<IActionResult> GetBorrowersLoan() {
         // Using IActionResult allows for better API response handling.
-        // - If no borrowers have active loans, we return 404 Not Found.
-        // - If borrowers exists, we return 200 OK with the data.
         // This approach ensures a more restful API compared to returning a raw List<T> or IList<T>
 
-        var response = Ok(await _borrowerRepository.GetBorrowersAsync());
-        return Ok(response);
+        var response = await _borrowerRepository.GetBorrowersAsync();
+        return response.Success ? Ok(response) : BadRequest(response);
     }
 
     [HttpPut]
@@ -58,6 +58,6 @@ public class BorrowerController : ControllerBase
     [Route("ReservationStatus/{borrowerId}/{bookId}")]
     public async Task<IActionResult> GetReservationStatus(Guid borrowerId, Guid bookId) {
         var response = await _borrowerRepository.GetReservationStatus(borrowerId, bookId);
-        return response.Success ? Ok(response) : NotFound(response);
+        return response.Success ? Ok(response) : BadRequest(response);
     }
 }
