@@ -1,35 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
-using OneBeyondApi.DataAccess;
-using OneBeyondApi.Model;
-using System.Collections;
+using OneBeyond.DomainLogic;
+using OneBeyond.Model.Entities;
 
-namespace OneBeyondApi.Controllers
+namespace OneBeyond.API.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class BookController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class BookController : ControllerBase
-    {
-        private readonly ILogger<BookController> _logger;
-        private readonly IBookRepository _bookRepository;
+    private readonly ILogger<BookController> _logger;
+    private readonly IBookRepository _bookRepository;
 
-        public BookController(ILogger<BookController> logger, IBookRepository bookRepository)
-        {
-            _logger = logger;
-            _bookRepository = bookRepository;   
-        }
+    public BookController(ILogger<BookController> logger, IBookRepository bookRepository) {
+        _logger = logger;
+        _bookRepository = bookRepository;
+    }
 
-        [HttpGet]
-        [Route("GetBooks")]
-        public IList<Book> Get()
-        {
-            return _bookRepository.GetBooks();
-        }
+    [HttpGet]
+    [Route("GetBooks")]
+    public async Task<IActionResult> Get() {
+        return Ok(await _bookRepository.GetBooksAsync());
+    }
 
-        [HttpPost]
-        [Route("AddBook")]
-        public Guid Post(Book book)
-        {
-            return _bookRepository.AddBook(book);
-        }
+    [HttpPost]
+    [Route("AddBook")]
+    public async Task<IActionResult> Post(Book book) {
+        return Ok(await _bookRepository.AddBookAsync(book));
     }
 }

@@ -1,35 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
-using OneBeyondApi.DataAccess;
-using OneBeyondApi.Model;
-using System.Collections;
+using OneBeyond.DomainLogic;
+using OneBeyond.Model.Entities;
 
-namespace OneBeyondApi.Controllers
+namespace OneBeyond.API.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class AuthorController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class AuthorController : ControllerBase
-    {
-        private readonly ILogger<AuthorController> _logger;
-        private readonly IAuthorRepository _authorRepository;
+    private readonly ILogger<AuthorController> _logger;
+    private readonly IAuthorRepository _authorRepository;
 
-        public AuthorController(ILogger<AuthorController> logger, IAuthorRepository authorRepository)
-        {
-            _logger = logger;
-            _authorRepository = authorRepository;   
-        }
+    public AuthorController(ILogger<AuthorController> logger, IAuthorRepository authorRepository) {
+        _logger = logger;
+        _authorRepository = authorRepository;
+    }
 
-        [HttpGet]
-        [Route("GetAuthors")]
-        public IList<Author> Get()
-        {
-            return _authorRepository.GetAuthors();
-        }
+    [HttpGet]
+    [Route("GetAuthors")]
+    public async Task<IActionResult> Get() {
+        return Ok(await _authorRepository.GetAuthorsAsync());
+    }
 
-        [HttpPost]
-        [Route("AddAuthor")]
-        public Guid Post(Author author)
-        {
-            return _authorRepository.AddAuthor(author);
-        }
+    [HttpPost]
+    [Route("AddAuthor")]
+    public async Task<IActionResult> Post(Author author) {
+        return Ok(await _authorRepository.AddAuthorAsync(author));
     }
 }
