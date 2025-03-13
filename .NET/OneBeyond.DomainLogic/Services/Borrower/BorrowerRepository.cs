@@ -20,7 +20,7 @@ public class BorrowerRepository : IBorrowerRepository
 
         return borrowers.Count != 0
             ? ApiResponse<List<Borrower>>.SuccessResponse(borrowers)
-            : ApiResponse<List<Borrower>>.ErrorResponse("No borrowers found.");
+            : ApiResponse<List<Borrower>>.ErrorResponse(ResponseMessages.BorrowerNotFound);
     }
 
     public async Task<ApiResponse<Guid>> AddBorrowerAsync(Borrower borrower)
@@ -33,17 +33,17 @@ public class BorrowerRepository : IBorrowerRepository
         var borrowers = await _borrowerDao.GetBorrowersLoansAsync();
 
         return borrowers.Count != 0
-            ? ApiResponse<List<BorrowerLoanDto>>.SuccessResponse(borrowers, "Borrowers with active loans retrieved successfully")
-            : ApiResponse<List<BorrowerLoanDto>>.ErrorResponse("No borrowers found with active loans.");
+            ? ApiResponse<List<BorrowerLoanDto>>.SuccessResponse(borrowers, ResponseMessages.BorrowerActiveLoansRetrieveSuccessfully)
+            : ApiResponse<List<BorrowerLoanDto>>.ErrorResponse(ResponseMessages.BorrowerActiveLoansNotFound);
     }
 
     public async Task<ApiResponse<Guid>> MarkBookAsReturned(Guid bookStockId) {
         var bookStock = await _borrowerDao.GetBookStockByIdAsync(bookStockId);
 
         if (bookStock is null)
-            return ApiResponse<Guid>.ErrorResponse("Book not found");
+            return ApiResponse<Guid>.ErrorResponse(ResponseMessages.BookNotFound);
         if (bookStock.OnLoanTo is null)
-            return ApiResponse<Guid>.ErrorResponse("Book is not currently on loan");
+            return ApiResponse<Guid>.ErrorResponse(ResponseMessages.BookNotOnLoan);
 
         // check for fine
         var returnDate = DateTime.UtcNow;
@@ -65,14 +65,14 @@ public class BorrowerRepository : IBorrowerRepository
         await _borrowerDao.SaveChangesAsync();
 
         return fineAmount > 0 
-            ? ApiResponse<Guid>.SuccessResponse(bookStockId, $"Book returned late. Fine imposed: ${fineAmount}")
-            : ApiResponse<Guid>.SuccessResponse(bookStockId, "Book successfully returned");
+            ? ApiResponse<Guid>.SuccessResponse(bookStockId, string.Format(ResponseMessages.BookReturnedLate, fineAmount))
+            : ApiResponse<Guid>.SuccessResponse(bookStockId, ResponseMessages.BookReturnedSuccessfully);
     }
 
     public async Task<ApiResponse<Guid>> ReserveBook(Guid borrowerId, Guid bookId) {
         // check if book was already reserved by that borrower
         if (await _borrowerDao.IsBookReservedByBorrowerAsync(borrowerId, bookId))
-            return ApiResponse<Guid>.ErrorResponse("You have already reserved that book");
+            return ApiResponse<Guid>.ErrorResponse(ResponseMessages.BookAlreadyReservedByYou);
 
         // check the queue for that book reservation
         var queuePosition = await _borrowerDao.GetReservationQueuePositionAsync(bookId);
@@ -84,21 +84,20 @@ public class BorrowerRepository : IBorrowerRepository
             ExpectedAvailabilityDate = expectedAvailabilityDate
         };
 
-        var reservationId = await _borrowerDao.AddReservationAsync(reservation);
+        await _borrowerDao.AddReservationAsync(reservation);
 
-
-        return ApiResponse<Guid>.SuccessResponse(reservation.Guid, $"Book reserved successfully. Your estimated availability date: {expectedAvailabilityDate.ToShortDateString()}");
+        return ApiResponse<Guid>.SuccessResponse(reservation.Guid, string.Format(ResponseMessages.BookReservedSuccessfully, expectedAvailabilityDate.ToShortDateString()));
     }
 
     public async Task<ApiResponse<ReservationStatusDto>> GetReservationStatus(Guid borrowerId, Guid bookId) {
         var reservation = await _borrowerDao.GetReservationStatusAsync(borrowerId, bookId);
 
         if (reservation == null)
-            return ApiResponse<ReservationStatusDto>.ErrorResponse("No active reservation found for this book");
+            return ApiResponse<ReservationStatusDto>.ErrorResponse(ResponseMessages.BookNotReserved);
 
         return ApiResponse<ReservationStatusDto>.SuccessResponse(new(BorrowerName: reservation.Borrower.Name, 
                                                                      BookName: reservation.Book.Name,
                                                                      ReservationDate: reservation.ReservationDate,
-                                                                     ExpectedAvailabilityDate: reservation.ExpectedAvailabilityDate), "Reservation status retrieved successfully.");
+                                                                     ExpectedAvailabilityDate: reservation.ExpectedAvailabilityDate), ResponseMessages.BookReservationStatusSuccessfully);
     }
 }
